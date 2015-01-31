@@ -8,6 +8,13 @@ def Distance(p0, p1):
     from math import sqrt
     return sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
 
+#i did not include sample data, which in retrospect is a mistake.  generally speaking the inputs
+#are just a set of cordinate pairs, based on code below a list of x coordinates, y coordinates
+#and whatever data structre is loaded to lclSets below.
+
+#lclSets should be a list of point-pair sets, likely built from xIn and yIn?
+
+
 setGroups = open(r'setGroupData.pkl','r')
 
 
