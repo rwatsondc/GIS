@@ -5,6 +5,7 @@ def ExpandList(inList):
 
 def CollapsePoints2D(a1, a2):
     #take 2 arrays, X&Y, and return single list of points
+    #can be replaced by python's zip function
     outArray = []
     if len(a1)==len(a2):
         for i in range(len(a1)):
@@ -13,6 +14,8 @@ def CollapsePoints2D(a1, a2):
 
 def ExpandPoints2D(inPnts):
     #take a single list of 2D points and expand to 2 sets of lists
+    #can also be replaced by pythons zip function
+    #http://stackoverflow.com/questions/19339/a-transpose-unzip-function-in-python-inverse-of-zip
     xOut = []
     yOut = []
     for i in inPnts:
@@ -22,6 +25,7 @@ def ExpandPoints2D(inPnts):
 
 def Distance(p0, p1):
     #basic distance formula
+    #can (likely) be replaced by math.hypot
     from math import sqrt
     return sqrt((p0[0] - p1[0])**2 + (p0[1] - p1[1])**2)
 
@@ -79,6 +83,7 @@ def Chaining(inLinks, test_back=[]):
 
 
     from itertools import groupby
+    #this global variable may be sloppy, but it worked.
     global cycleCount
 
     ##First run only?
@@ -92,6 +97,7 @@ def Chaining(inLinks, test_back=[]):
         #now, sort list and count links:
         lclAllLinks.sort()
         #this is needed to handle the counts situation...
+        #list comprehension?
         unDupeLinks = []
         for temp in lclAllLinks:
             if temp not in unDupeLinks:
@@ -103,7 +109,7 @@ def Chaining(inLinks, test_back=[]):
         #print "Counts", lclCounts
         chainKeys = []
 
-
+        #enumerate might have been handy to use here, lessons learned.
         for idx in range(len(lclCounts)):
             if lclCounts[idx] > 1:
                 #print unDupeLinks[idx], " must be chained!"
@@ -135,15 +141,18 @@ def Chaining(inLinks, test_back=[]):
     if cycleCount > 0:
         if inLinks == test_back:
             #print "BREAK!!!"
+            #test_back allows for recursion but also is used for knowing when to exit, i think?
 
             return inLinks
         else:
+            #I wrote this before I knew about dictionaries, list comprehension, enumerate, and a few other 
+            #helper functions.
 
 
             localChains = []
             exitChain = []
 
-            #for this part, you've correctly merged 2 chains, first add the strglers
+            #for this part, you've correctly merged 2 chains, first add the straglers
             #the chains of 2, those without keys
             localChains2 = []
             #print "key", chainKeys[0]
@@ -201,6 +210,7 @@ def Linked(inLink1, inLink2):
     return testResult
 
 #this function tests to see if two linked links are hangers or joiners
+###I had to develope an interval terminology set, hangers = hanging links, joiners = joining links
 #since you're using sets, try unioning your input sets with this test, see what hapens?
 def JoiningLink(inLink1, inLinkSet):
     testResult = False
@@ -234,6 +244,9 @@ def SetReversion(inChainsList):
             outChain.add(outLink)
         outSets.add(outChain)
     return outSets
+
+#I believe this is the function I needed to solve my problem of building networks,
+#everythng else was prep to make this possible in a semi-controlable way
 
 def MinChainDistanceGeom(inDistCombo, total_points, average_multiple = None, print_flag =False, cut_off=150):
     #there appears to be a bug in the return value of nodeset when average_multiple is used
